@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ATM Machine</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+    }
+
+    #atm-container {
+      margin-top: 50px;
+    }
+
+    .input-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    input {
+      padding: 5px;
+    }
+
+    button {
+      padding: 10px;
+      cursor: pointer;
+      margin-right: 10px;
+    }
+  </style>
+</head>
+<body>
+
+<div id="atm-container">
+  <h1>ATM Machine</h1>
+
+  <div class="input-group">
+    <label for="pin">Enter PIN:</label>
+    <input type="password" id="pin" maxlength="4">
+  </div>
+
+  <div class="input-group">
+    <label for="amount">Enter Amount:</label>
+    <input type="number" id="amount" min="1">
+  </div>
+
+  <button onclick="checkPin()">Submit</button>
+  <button onclick="changePin()">Change PIN</button>
+
+  <div id="result"></div>
+</div>
+
+<script>
+  let correctPin = "1234";
+  let balance = 1000;
+
+  function checkPin() {
+    const enteredPin = document.getElementById("pin").value;
+
+    if (enteredPin === correctPin) {
+      performTransaction();
+    } else {
+      displayResult("Incorrect PIN. Please try again.");
+    }
+  }
+
+  function performTransaction() {
+    const amount = parseFloat(document.getElementById("amount").value);
+
+    if (isNaN(amount) || amount <= 0) {
+      displayResult("Invalid amount. Please enter a valid amount.");
+      return;
+    }
+
+    if (amount > balance) {
+      displayResult("Insufficient funds.");
+    } else {
+      balance -= amount;
+      displayResult(`Transaction successful. Remaining balance: $${balance}`);
+    }
+  }
+
+  function changePin() {
+    const newPin = prompt("Enter new PIN (4 digits):");
+
+    if (newPin && /^\d{4}$/.test(newPin)) {
+      correctPin = newPin;
+      displayResult("PIN changed successfully.");
+    } else {
+      displayResult("Invalid PIN. Please enter a 4-digit PIN.");
+    }
+  }
+
+  function displayResult(message) {
+    document.getElementById("result").innerText = message;
+  }
+</script>
+
+</body>
+</html>
